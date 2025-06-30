@@ -46,4 +46,4 @@ Perplexity combina le capacità di un motore di ricerca tradizionale con l'AI co
 
 ---
 
-*Documento aggiornato al giugno 2025. Gli URL e le funzionalità potrebbero variare nel tempo.*
+*Documento generato con Claude Sonnet 4 e aggiornato a giugno 2025. Il documento è stato revisionato a giugno 2025. Le URL e le funzionalità potrebbero variare nel tempo.*
