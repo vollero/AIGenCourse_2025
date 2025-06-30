@@ -1,0 +1,1 @@
+- [Prediction is not Reasoning!](https://www.linkedin.com/pulse/prediction-reasoning-exploring-chatgpt-childrens-riddles-revang/)
