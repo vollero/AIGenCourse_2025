@@ -254,4 +254,4 @@ Ricorda: l'AI è uno strumento potente che amplifica le tue competenze didattich
 
 ---
 
-*Generato con Claude Sonnet 4 e supervisionato da Luca Vollero (22/6/2025).*
+*Generato con Claude Sonnet 4 e supervisionato (22/6/2025).*
