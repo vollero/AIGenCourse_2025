@@ -624,3 +624,6 @@ Un approccio metodico nella formulazione dei prompt trasforma un LLM da semplice
 
 - Con l'eccezione del primo prompt completo (caso analisi matematica) quelli successivi sono troppo demanding dal punto di vista del materiale e non rispettano il principio di modularità.
 - Partendo da questi prompt è possibile derivarne diversi, più modulari, che integrati rispondono al prompt complessivamente indicato.
+
+
+* Generato con Claude Sonnet 4 e parzialmente revisionato sui prompt complessi*
