@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Generativo per Materiali Didattici Universitari</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow-y: auto;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 20px;
+        }
+        
+        h2 {
+            color: #34495e;
+            font-size: 2em;
+            margin: 30px 0 20px 0;
+            border-left: 6px solid #e74c3c;
+            padding-left: 20px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            font-size: 1.4em;
+            margin: 20px 0 15px 0;
+            color: #27ae60;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+        
+        .objectives {
+            background: #ecf0f1;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+        
+        .classic-ai, .generative-ai {
+            padding: 25px;
+            border-radius: 10px;
+        }
+        
+        .classic-ai {
+            background: #fdf2e9;
+            border-left: 5px solid #f39c12;
+        }
+        
+        .generative-ai {
+            background: #e8f8f5;
+            border-left: 5px solid #1abc9c;
+        }
+        
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 25px 0;
+        }
+        
+        .pros, .cons {
+            padding: 25px;
+            border-radius: 10px;
+        }
+        
+        .pros {
+            background: #d5f4e6;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .cons {
+            background: #fadbd8;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .prompt-example {
+            background: #f8f9fa;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+        
+        .prompt-example::before {
+            content: "💡 Esempio di Prompt";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .tool-card {
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .llm-architecture {
+            background: #f0f8ff;
+            border: 2px solid #3498db;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .service-elements {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .element-card {
+            background: #f8f9fa;
+            border: 2px solid #6c757d;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(52, 73, 94, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        li {
+            margin: 8px 0;
+            font-size: 1.1em;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        
+        .exercise-box {
+            background: #e8f5e8;
+            border: 2px dashed #27ae60;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .exercise-box h3 {
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+        
+        .checklist {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .checklist li {
+            list-style: none;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">16</span>
+        </div>
+        
+        <!-- Slide 1: Titolo -->
+        <div class="slide active">
+            <h1>🤖 AI Generativo per Materiali Didattici Universitari</h1>
+            <div class="subtitle">
+                <strong>Workshop Pratico per Docenti</strong><br>
+                Durata: 2 ore
+            </div>
+            
+            <div style="text-align: center; margin: 40px 0;">
+                <div style="font-size: 4em; margin: 20px;">🎓</div>
+                <p style="font-size: 1.3em; color: #2c3e50;">
+                    <strong>Luca Vollero e Claudio Pensieri</strong><br>
+                    Università Campus Bio-Medico di Roma<br>
+                    <em>Data: 23/6/2025</em>
+                </p>
+            </div>
+            
+            <div class="objectives">
+                <h3>🎯 Cosa Imparerai Oggi:</h3>
+                <ul>
+                    <li>Identificare potenzialità e limiti dell'AI nella didattica</li>
+                    <li>Scrivere prompt efficaci per materiali didattici</li>
+                    <li>Utilizzare strumenti AI per contenuti di qualità</li>
+                    <li>Applicare strategie etiche nell'integrazione AI</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Presenza Workshop -->
+        <div class="slide">
+            <div style="height: 100%; display: flex; justify-content: center; align-items: center; margin: -60px; border-radius: 20px;">
+                <img src="Presenze Workshop IA UCBM.jpg" alt="Presenza Workshop Formazione Docenti IA" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+            </div>
+        </div>
+        
+        <!-- Slide 3: AI Classica vs AI Generativa -->
+        <div class="slide">
+            <h1>🔄 AI Classica vs AI Generativa</h1>
+            
+            <div class="comparison">
+                <div class="classic-ai">
+                    <h3>🎯 AI Classica (Narrow AI)</h3>
+                    <ul>
+                        <li><strong>Compiti specifici:</strong> Riconoscimento immagini, classificazione</li>
+                        <li><strong>Output deterministico:</strong> Risultati prevedibili e ripetibili</li>
+                        <li><strong>Analisi dati:</strong> Elabora informazioni esistenti</li>
+                        <li><strong>Apprendimento supervisionato:</strong> Richiede dati etichettati</li>
+                        <li><strong>Esempi:</strong> Sistemi diagnostici, algoritmi predittivi</li>
+                    </ul>
+                </div>
+                
+                <div class="generative-ai">
+                    <h3>✨ AI Generativa</h3>
+                    <ul>
+                        <li><strong>Creazione contenuti:</strong> Genera testo, immagini, codice</li>
+                        <li><strong>Output creativo:</strong> Risultati variabili e innovativi</li>
+                        <li><strong>Sintesi originale:</strong> Combina conoscenze per creare nuovo</li>
+                        <li><strong>Apprendimento non supervisionato:</strong> Pattern da grandi dataset</li>
+                        <li><strong>Esempi:</strong> ChatGPT, DALL-E, Copilot</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="llm-architecture">
+                <h3>🚀 Il Salto Quantico: Dal Riconoscimento alla Creazione</h3>
+                <p style="font-size: 1.2em; margin: 20px 0;">
+                    L'AI generativa non si limita a classificare o analizzare: <strong>comprende</strong> il linguaggio naturale e <strong>genera</strong> contenuti originali mantenendo coerenza semantica e contesto.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 30px; margin: 20px 0;">
+                    <div style="background: #fff; padding: 15px; border-radius: 10px; border: 2px solid #f39c12;">
+                        <strong>Prima:</strong> Input → Analisi → Classificazione
+                    </div>
+                    <div style="font-size: 2em;">→</div>
+                    <div style="background: #fff; padding: 15px; border-radius: 10px; border: 2px solid #1abc9c;">
+                        <strong>Ora:</strong> Prompt → Comprensione → Generazione
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>💡 Implicazioni per la Didattica:</strong> Dalla semplice automazione alla co-creazione intelligente di contenuti personalizzati e adattivi.
+            </div>
+        </div>
+        
+        <!-- Slide 4: Cosa sono gli LLM -->
+        <div class="slide">
+            <h1>🧠 Large Language Models (LLM)</h1>
+            
+            <div class="llm-architecture">
+                <h2 style="text-align: center; margin-bottom: 30px;">🔮 La "Magia" degli LLM Spiegata</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;">
+                    <div style="background: #e8f4fd; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #2980b9;">📚 Training</h4>
+                        <p>Miliardi di testi da internet, libri, articoli scientifici</p>
+                    </div>
+                    <div style="background: #fdf2e9; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #e67e22;">⚙️ Transformer</h4>
+                        <p>Architettura che "comprende" relazioni tra parole</p>
+                    </div>
+                    <div style="background: #eafaf1; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #27ae60;">💭 Emergenza</h4>
+                        <p>Capacità complesse emergono da pattern semplici</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>🔍 Come Funziona un LLM (Semplificato)</h2>
+            <ol style="font-size: 1.2em;">
+                <li><strong>Tokenizzazione:</strong> Converte testo in numeri (tokens)</li>
+                <li><strong>Attenzione:</strong> Identifica relazioni importanti tra parole</li>
+                <li><strong>Predizione:</strong> Calcola probabilità della prossima parola</li>
+                <li><strong>Generazione:</strong> Costruisce risposta token per token</li>
+            </ol>
+            
+            <div style="background: #f8f9fa; border: 2px solid #6c757d; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                <h4>💡 Analogia Didattica:</h4>
+                <p style="font-size: 1.1em;">
+                    Immagina uno studente che ha letto <strong>l'intera libreria mondiale</strong> e può richiamare istantaneamente pattern e connessioni per rispondere a qualsiasi domanda, pur non "sapendo" nel senso tradizionale.
+                </p>
+            </div>
+            
+            <h3>📊 Numeri che Impressionano:</h3>
+            <ul>
+                <li><strong>GPT-4:</strong> ~1.76 trilioni di parametri</li>
+                <li><strong>Training Data:</strong> Terabytes di testo</li>
+                <li><strong>Context Window:</strong> Fino a 128K tokens (≈ 300 pagine)</li>
+                <li><strong>Lingue:</strong> 100+ lingue con qualità variabile</li>
+            </ul>
+            
+            <div class="highlight">
+                <strong>🎯 Per la Didattica:</strong> Gli LLM sono "esperti generalisti" che possono adattarsi a qualsiasi disciplina mantenendo coerenza e accuratezza.
+            </div>
+        </div>
+        
+        <!-- Slide 5: Elementi Fondamentali dei Servizi a Prompt -->
+        <div class="slide">
+            <h1>⚙️ Anatomia dei Servizi AI a Prompt</h1>
+            
+            <h2>🏗️ Architettura Tipica di un Servizio AI</h2>
+            <div style="background: #f8f9fa; border: 2px solid #3498db; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-weight: bold;">
+                    <span>👤 User Interface</span>
+                    <span>→</span>
+                    <span>🛡️ Safety Filters</span>
+                    <span>→</span>
+                    <span>🧠 LLM Core</span>
+                    <span>→</span>
+                    <span>📝 Response</span>
+                </div>
+            </div>
+            
+            <div class="service-elements">
+                <div class="element-card">
+                    <h4>🎮 Interfaccia Utente</h4>
+                    <ul>
+                        <li>Chat web/mobile</li>
+                        <li>API per integrazioni</li>
+                        <li>Upload file/immagini</li>
+                        <li>Cronologia conversazioni</li>
+                    </ul>
+                </div>
+                
+                <div class="element-card">
+                    <h4>🛡️ Filtri di Sicurezza</h4>
+                    <ul>
+                        <li>Content moderation</li>
+                        <li>Rilevamento bias</li>
+                        <li>Blocco contenuti dannosi</li>
+                        <li>Privacy protection</li>
+                    </ul>
+                </div>
+                
+                <div class="element-card">
+                    <h4>🧠 Motore LLM</h4>
+                    <ul>
+                        <li>Modello pre-addestrato</li>
+                        <li>Context window management</li>
+                        <li>Temperature/creatività</li>
+                        <li>Token limits</li>
+                    </ul>
+                </div>
+                
+                <div class="element-card">
+                    <h4>⚙️ Ottimizzazioni</h4>
+                    <ul>
+                        <li>Prompt engineering</li>
+                        <li>Fine-tuning specifico</li>
+                        <li>Cache intelligente</li>
+                        <li>Load balancing</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>🎛️ Parametri Chiave dei Servizi</h2>
+            <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div>
+                        <h4>🌡️ Temperature (0-2)</h4>
+                        <p>Controllo creatività: 0 = deterministico, 2 = molto creativo</p>
+                        
+                        <h4>🎯 Top-p (0-1)</h4>
+                        <p>Campionamento nucleare: limita scelte a parole più probabili</p>
+                    </div>
+                    <div>
+                        <h4>📏 Max Tokens</h4>
+                        <p>Lunghezza massima risposta</p>
+                        
+                        <h4>🔄 System Message</h4>
+                        <p>Istruzioni di comportamento persistenti</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>💡 Per Docenti:</strong> Comprendere questi elementi aiuta a ottimizzare l'uso degli strumenti e troubleshooting quando i risultati non sono ottimali.
+            </div>
+        </div>
+        
+        <!-- Slide 6: Panoramica Strumenti (aggiornata) -->
+        <div class="slide">
+            <h1>🛠️ Strumenti di AI Generativo</h1>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>🤖 ChatGPT</h3>
+                    <p><strong>OpenAI</strong></p>
+                    <p>Conversazione naturale<br>Generazione testi<br>Coding assistance</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🧠 Claude</h3>
+                    <p><strong>Anthropic</strong></p>
+                    <p>Analisi approfondita<br>Ragionamento complesso<br>Documenti lunghi</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>💎 Gemini</h3>
+                    <p><strong>Google</strong></p>
+                    <p>Multimodale<br>Integrazione Google<br>Analisi immagini</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🚀 Copilot</h3>
+                    <p><strong>Microsoft</strong></p>
+                    <p>Integrato Office<br>Ricerca web live<br>Produttività aziendale</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🔍 Perplexity</h3>
+                    <p><strong>Perplexity AI</strong></p>
+                    <p>AI search engine<br>Fonti citate<br>Research assistant</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>📓 NotebookLM</h3>
+                    <p><strong>Google</strong></p>
+                    <p>Analisi documenti<br>Note intelligenti<br>Research synthesis</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>📊 Gamma</h3>
+                    <p><strong>Gamma</strong></p>
+                    <p>Presentazioni automatiche<br>Design intelligente<br>Content generation</p>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>💡 Consiglio:</strong> Inizia con uno strumento, poi espandi. Ogni piattaforma ha punti di forza specifici per diverse tipologie di contenuto didattico.
+            </div>
+            
+            <h3>🎯 Quale Scegliere per la Didattica?</h3>
+            <ul>
+                <li><strong>Principianti:</strong> ChatGPT o Copilot (interfaccia familiare)</li>
+                <li><strong>Ricerca avanzata:</strong> Claude o Perplexity (analisi profonda)</li>
+                <li><strong>Contenuti multimediali:</strong> Gemini (immagini + testo)</li>
+                <li><strong>Analisi documenti:</strong> NotebookLM (PDF e articoli)</li>
+                <li><strong>Presentazioni:</strong> Gamma (automazione design)</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 7: Potenzialità e Limiti -->
+        <div class="slide">
+            <h1>⚖️ Potenzialità vs Limitazioni</h1>
+            
+            <div class="pros-cons">
+                <div class="pros">
+                    <h3>✅ Vantaggi</h3>
+                    <ul>
+                        <li><strong>Velocità:</strong> Creazione rapida di contenuti</li>
+                        <li><strong>Personalizzazione:</strong> Adattamento a diversi livelli</li>
+                        <li><strong>Creatività:</strong> Nuove idee e approcci</li>
+                        <li><strong>Scalabilità:</strong> Materiali per grandi numeri</li>
+                        <li><strong>Accessibilità:</strong> Traduzione e semplificazione</li>
+                        <li><strong>Interattività:</strong> Quiz, simulazioni, casi</li>
+                    </ul>
+                </div>
+                
+                <div class="cons">
+                    <h3>❌ Limitazioni Critiche</h3>
+                    <ul>
+                        <li><strong>Allucinazioni:</strong> Informazioni inventate</li>
+                        <li><strong>Obsolescenza:</strong> Dati non aggiornati</li>
+                        <li><strong>Bias:</strong> Pregiudizi nei contenuti</li>
+                        <li><strong>Superficialità:</strong> Mancanza di expertise</li>
+                        <li><strong>Copyright:</strong> Problemi legali</li>
+                        <li><strong>Dipendenza:</strong> Riduzione creatività</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="highlight">
+                <strong>⚠️ Principio Fondamentale:</strong> L'AI è un assistente, non un sostituto. La responsabilità scientifica e pedagogica rimane sempre del docente.
+            </div>
+        </div>
+        
+        <!-- Slide 8: Anatomia del Prompt -->
+        <div class="slide">
+            <h1>📝 Anatomia di un Prompt Efficace</h1>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <div style="background: #3498db; color: white; padding: 15px; border-radius: 10px; font-size: 1.3em;">
+                    <strong>[RUOLO] + [CONTESTO] + [COMPITO] + [FORMATO] + [VINCOLI]</strong>
+                </div>
+            </div>
+            
+            <div class="prompt-example">
+                <strong>🔬 Esempio per Biochimica:</strong><br><br>
+                <span style="color: #e74c3c;"><strong>[RUOLO]</strong></span> Sei un docente esperto di biochimica metabolica.<br>
+                <span style="color: #f39c12;"><strong>[CONTESTO]</strong></span> Studenti del secondo anno di medicina.<br>
+                <span style="color: #27ae60;"><strong>[COMPITO]</strong></span> Crea 5 domande a risposta multipla sul ciclo di Krebs.<br>
+                <span style="color: #9b59b6;"><strong>[FORMATO]</strong></span> 4 opzioni per domanda + spiegazioni.<br>
+                <span style="color: #34495e;"><strong>[VINCOLI]</strong></span> Difficoltà crescente, include applicazioni cliniche.
+            </div>
+            
+            <div style="background: #e8f5e8; border: 2px solid #27ae60; border-radius: 10px; padding: 20px; margin: 20px 0;">
+                <h4 style="color: #27ae60; margin-bottom: 15px;">🤖 Output ChatGPT:</h4>
+                <div style="font-size: 0.9em; max-height: 200px; overflow-y: auto;">
+                    <strong>1️⃣ Quale reazione del ciclo di Krebs porta alla formazione di NADH?</strong><br>
+                    A) Citrato → isocitrato B) <em>Isocitrato → α-chetoglutarato ✓</em> C) Succinato → fumarato D) Fumarato → malato<br><br>
+                    
+                    <strong>2️⃣ Quale enzima è inibito da alti livelli di ATP?</strong><br>
+                    <em>B) Isocitrato deidrogenasi ✓</em> - Punto chiave di regolazione energetica<br><br>
+                    
+                    <strong>5️⃣ L'accumulo di succinato nei tumori:</strong><br>
+                    <em>C) Stabilizza HIF-1α ✓</em> - Meccanismo oncogenico avanzato<br><br>
+                    
+                    <strong>💡 Qualità output:</strong> Difficoltà progressiva, spiegazioni scientifiche accurate, collegamenti clinici avanzati
+                </div>
+            </div>
+            
+            <h3>🎯 Principi Chiave:</h3>
+            <ul>
+                <li><strong>Specificità:</strong> Più dettagli = risultati migliori</li>
+                <li><strong>Contesto:</strong> Livello studenti, disciplina, obiettivi</li>
+                <li><strong>Formato:</strong> Definire struttura output desiderata</li>
+                <li><strong>Vincoli:</strong> Lunghezza, stile, requisiti specifici</li>
+                <li><strong>Esempi:</strong> Fornire modelli quando possibile</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 9: Esempi Disciplina-Specifici -->
+        <div class="slide">
+            <h1>🏥 Esempi per Discipline Biomediche</h1>
+            
+            <h2>Medicina - Caso Clinico</h2>
+            <div class="prompt-example">
+                Crea un caso clinico realistico per studenti di medicina del 4° anno 
+                che illustri la diagnosi differenziale tra infarto miocardico e 
+                embolia polmonare. Includi: anamnesi, sintomi, esami fisici, 
+                laboratorio, ECG, domande progressive per ragionamento diagnostico.
+            </div>
+            
+            <h2>Infermieristica - Scenario Assistenziale</h2>
+            <div class="prompt-example">
+                Sviluppa uno scenario di simulazione per studenti infermieri 
+                sul management di paziente diabetico in chetoacidosi. 
+                Descrivi: condizioni all'arrivo, priorità assistenziali, 
+                protocolli monitoraggio, interventi specifici, 
+                criteri valutazione competenze.
+            </div>
+            
+            <h2>Ingegneria Biomedica - Problem Solving</h2>
+            <div class="prompt-example">
+                Progetta un problema per il design di un biosensore glucosio. 
+                Include: specifiche tecniche, vincoli biocompatibilità, 
+                materiali, calcoli sensitivity/specificity, 
+                steps progressivi risoluzione.
+            </div>
+        </div>
+        
+        <!-- Slide 10: Esercizio Guidato 1 -->
+        <div class="slide">
+            <h1>🔬 Esercizio Guidato 1</h1>
+            
+            <div class="exercise-box">
+                <h3>💻 Lavoro in Gruppi (15 minuti)</h3>
+                <p><strong>Compito:</strong> Scrivere un prompt per creare materiale didattico per la propria disciplina</p>
+            </div>
+            
+            <h2>📋 Istruzioni:</h2>
+            <ol>
+                <li><strong>Formare gruppi</strong> per disciplina (3-4 persone)</li>
+                <li><strong>Scegliere un argomento</strong> specifico della vostra materia</li>
+                <li><strong>Definire il target</strong> (anno, corso di laurea)</li>
+                <li><strong>Decidere il tipo</strong> di materiale (quiz, caso, spiegazione, esercizio)</li>
+                <li><strong>Scrivere il prompt</strong> seguendo la struttura [RUOLO + CONTESTO + COMPITO + FORMATO + VINCOLI]</li>
+            </ol>
+            
+            <div class="highlight">
+                <strong>🎯 Obiettivo:</strong> Creare un prompt completo e specifico che produca materiale didattico di qualità per la vostra disciplina.
+            </div>
+            
+            <h3>📝 Template di Supporto:</h3>
+            <div class="prompt-example">
+                Sei un [RUOLO ESPERTO] in [DISCIPLINA SPECIFICA].
+                Crea [TIPO MATERIALE] per studenti [ANNO] di [CORSO].
+                Argomento: [TOPIC SPECIFICO].
+                Formato: [STRUTTURA DESIDERATA].
+                Requisiti: [VINCOLI E SPECIFICHE].
+            </div>
+        </div>
+        
+        <!-- Slide 11: Tecniche Avanzate -->
+        <div class="slide">
+            <h1>🚀 Tecniche di Prompting Avanzate</h1>
+            
+            <h2>1. Chain-of-Thought Prompting</h2>
+            <div class="prompt-example">
+                Spiega <strong>step-by-step</strong> il meccanismo della coagulazione del sangue.
+                Per ogni passaggio indica: molecole coinvolte, reazioni biochimiche, 
+                meccanismi regolazione, possibili disfunzioni.
+            </div>
+            
+            <h2>2. Few-Shot Learning</h2>
+            <div class="prompt-example">
+                <strong>Ecco due esempi di spiegazioni analogiche:</strong><br>
+                Esempio 1 - Osmosi: "Immagina due stanze separate da una porta..."<br>
+                Esempio 2 - pH: "Pensa al pH come al termometro dell'acidità..."<br><br>
+                <strong>Ora spiega la farmacocinetica usando lo stesso approccio.</strong>
+            </div>
+            
+            <h2>3. Iterative Refinement</h2>
+            <ul>
+                <li><strong>Prompt 1:</strong> Creazione contenuto base</li>
+                <li><strong>Prompt 2:</strong> "Rendi più adatto a studenti primo anno"</li>
+                <li><strong>Prompt 3:</strong> "Aggiungi 3 esempi clinici pratici"</li>
+                <li><strong>Prompt 4:</strong> "Includi domande di auto-valutazione"</li>
+            </ul>
+            
+            <div class="highlight">
+                <strong>💡 Pro Tip:</strong> Non aspettarti perfezione al primo tentativo. L'iterazione è la chiave per risultati ottimali.
+            </div>
+        </div>
+        
+        <!-- Slide 12: Controllo Qualità -->
+        <div class="slide">
+            <h1>🔍 Controllo Qualità e Fact-Checking</h1>
+            
+            <h2>⚠️ Checklist per Materiali Didattici</h2>
+            <div class="checklist">
+                <ul>
+                    <li>Verifica accuratezza scientifica con fonti primarie</li>
+                    <li>Controlla aggiornamento linee guida cliniche</li>
+                    <li>Valida dosaggi e protocolli farmacologici</li>
+                    <li>Conferma nomenclatura IUPAC per chimica</li>
+                    <li>Verifica conformità best practices cliniche</li>
+                    <li>Controlla bias di genere/età/etnia nei casi</li>
+                    <li>Valida riferimenti bibliografici</li>
+                    <li>Testa comprensibilità con target studenti</li>
+                </ul>
+            </div>
+            
+            <h2>🛠️ Workflow Consigliato</h2>
+            <ol>
+                <li><strong>Progettazione:</strong> Obiettivi didattici chiari</li>
+                <li><strong>Generazione:</strong> Prompt strutturati e iterativi</li>
+                <li><strong>Verifica:</strong> Fact-checking rigoroso</li>
+                <li><strong>Personalizzazione:</strong> Adattamento contesto</li>
+                <li><strong>Testing:</strong> Validazione con studenti/colleghi</li>
+                <li><strong>Revisione:</strong> Aggiornamento basato su feedback</li>
+            </ol>
+            
+            <div class="highlight">
+                <strong>🎯 Regola d'Oro:</strong> Mai pubblicare contenuto AI senza verifica umana esperta. La responsabilità scientifica è sempre del docente.
+            </div>
+        </div>
+        
+        <!-- Slide 13: Considerazioni Etiche -->
+        <div class="slide">
+            <h1>⚖️ Integrazione Etica e Best Practices</h1>
+            
+            <h2>🎯 Principi Etici Fondamentali</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>📢 Trasparenza</h3>
+                    <p>Dichiarare l'uso di AI agli studenti e spiegare come viene utilizzata</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🎯 Accuratezza</h3>
+                    <p>Responsabilità finale sempre del docente per contenuti scientifici</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>✨ Originalità</h3>
+                    <p>Evitare plagio e rispettare copyright. Citare sempre le fonti</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>⚖️ Equità</h3>
+                    <p>Prevenire bias nei contenuti generati, inclusività per tutti</p>
+                </div>
+            </div>
+            
+            <h2>📋 Linee Guida Pratiche</h2>
+            <ul>
+                <li><strong>Comunicazione:</strong> Informare studenti su uso AI nei materiali</li>
+                <li><strong>Validazione:</strong> Sempre fact-check con fonti autorevoli</li>
+                <li><strong>Personalizzazione:</strong> Adattare contenuti al contesto locale</li>
+                <li><strong>Aggiornamento:</strong> Revisionare regolarmente per accuratezza</li>
+                <li><strong>Backup:</strong> Mantenere versioni tradizionali come fallback</li>
+            </ul>
+            
+            <div class="highlight">
+                <strong>💡 Approccio Consigliato:</strong> "AI-Assisted, Human-Verified" - Usare AI per efficienza, umano per qualità e responsabilità.
+            </div>
+        </div>
+        
+        <!-- Slide 14: Esercizio Pratico 2 -->
+        <div class="slide">
+            <h1>🧪 Esercizio Pratico 2</h1>
+            
+            <div class="exercise-box">
+                <h3>💻 Hands-On con AI (15 minuti)</h3>
+                <p><strong>Obiettivo:</strong> Creare un elemento didattico specifico usando strumenti AI</p>
+            </div>
+            
+            <h2>📝 Istruzioni Step-by-Step:</h2>
+            <ol>
+                <li><strong>Scegli la piattaforma:</strong> ChatGPT, Claude, Gemini, Copilot o Perplexity</li>
+                <li><strong>Seleziona argomento:</strong> Dalla tua materia, per i tuoi studenti</li>
+                <li><strong>Scrivi il prompt:</strong> Usa tecniche apprese (ruolo + contesto + compito + formato + vincoli)</li>
+                <li><strong>Genera contenuto:</strong> Esegui il prompt e valuta risultato</li>
+                <li><strong>Itera se necessario:</strong> Raffina con prompt aggiuntivi</li>
+                <li><strong>Verifica qualità:</strong> Fact-check e adattamento</li>
+            </ol>
+            
+            <h2>🎯 Tipologie di Materiali da Provare:</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>📝 Quiz Interattivi</h3>
+                    <p>Domande multiple choice con spiegazioni dettagliate</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🏥 Casi Clinici</h3>
+                    <p>Scenari realistici con processo diagnostico guidato</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🔬 Esperimenti Virtuali</h3>
+                    <p>Protocolli di laboratorio con troubleshooting</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>📊 Spiegazioni Visuali</h3>
+                    <p>Descrizioni per infografiche e diagrammi</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 15: Progetto Finale -->
+        <div class="slide">
+            <h1>🎯 Progetto Finale Guidato</h1>
+            
+            <div class="exercise-box">
+                <h3>🚀 Sviluppo Materiale Didattico Completo (20 minuti)</h3>
+                <p>Creare un elemento didattico pronto per l'uso in aula</p>
+            </div>
+            
+            <h2>⏱️ Timeline Strutturata:</h2>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0;">
+                <div style="background: #e8f5e8; padding: 15px; border-radius: 10px; text-align: center;">
+                    <strong>2 min</strong><br>Scelta Argomento
+                </div>
+                <div style="background: #fff3cd; padding: 15px; border-radius: 10px; text-align: center;">
+                    <strong>5 min</strong><br>Scrittura Prompt
+                </div>
+                <div style="background: #d1ecf1; padding: 15px; border-radius: 10px; text-align: center;">
+                    <strong>8 min</strong><br>Generazione & Iterazione
+                </div>
+                <div style="background: #f8d7da; padding: 15px; border-radius: 10px; text-align: center;">
+                    <strong>5 min</strong><br>Revisione & QC
+                </div>
+            </div>
+            
+            <h2>📋 Criteri di Valutazione:</h2>
+            <ul>
+                <li><strong>Rilevanza:</strong> Allineamento con obiettivi didattici</li>
+                <li><strong>Accuratezza:</strong> Correttezza scientifica del contenuto</li>
+                <li><strong>Chiarezza:</strong> Comprensibilità per target studenti</li>
+                <li><strong>Engagement:</strong> Capacità di coinvolgere e motivare</li>
+                <li><strong>Applicabilità:</strong> Facilità di integrazione in corso</li>
+            </ul>
+            
+            <div class="highlight">
+                <strong>🎁 Bonus:</strong> Al termine, condivideremo i migliori materiali creati per ispirazione reciproca!
+            </div>
+        </div>
+        
+        <!-- Slide 16: Takeaway e Prossimi Passi -->
+        <div class="slide">
+            <h1>🎯 Takeaway e Prossimi Passi</h1>
+            
+            <h2>📝 Checklist Post-Corso</h2>
+            <div class="checklist">
+                <ul>
+                    <li>Sperimentare con almeno 2 piattaforme AI diverse</li>
+                    <li>Creare libreria di prompt personalizzati per la tua disciplina</li>
+                    <li>Sviluppare workflow di fact-checking specifico</li>
+                    <li>Condividere best practices con colleghi dipartimento</li>
+                    <li>Valutare impatto sui risultati apprendimento studenti</li>
+                    <li>Pianificare integrazione graduale nei corsi esistenti</li>
+                </ul>
+            </div>
+            
+            <h2>📚 Risorse per Approfondimento</h2>
+            <ul>
+                <li><strong>OpenAI Cookbook:</strong> Guide ufficiali per ChatGPT</li>
+                <li><strong>Anthropic Claude Guide:</strong> Tecniche avanzate prompting</li>
+                <li><strong>AI4Teaching Community:</strong> Network educatori</li>
+                <li><strong>Papers:</strong> "AI in Higher Education" (Nature, 2024)</li>
+            </ul>
+            
+            <h2>🤝 Community e Supporto Continuo</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h3>💬 Gruppo Chat</h3>
+                    <p>Formazione Unicampus per condivisione immediata</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>📁 Repository</h3>
+                    <p>Formazione Unicampus con prompt templates aggiornati</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>🔄 Follow-up</h3>
+                    <p>Realizzazione di Pillole di aggiornamento</p>
+                </div>
+                
+                <div class="tool-card">
+                    <h3>📧 Forum</h3>
+                    <p>Novità, tools, case studies</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 40px 0; padding: 30px; background: #f8f9fa; border-radius: 15px;">
+                <h3 style="color: #2c3e50; margin-bottom: 20px;">🚀 Il Futuro della Didattica</h3>
+                <p style="font-size: 1.2em; font-style: italic; color: #34495e;">
+                    "L'AI non sostituisce il docente esperto, ma amplifica la sua capacità di creare esperienze di apprendimento significative e personalizzate."
+                </p>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" onclick="changeSlide(-1)">← Precedente</button>
+            <button class="nav-btn" id="next-btn" onclick="changeSlide(1)">Successiva →</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function changeSlide(direction) {
+            if ((direction === -1 && currentSlide > 0) || (direction === 1 && currentSlide < totalSlides - 1)) {
+                showSlide(currentSlide + direction);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
