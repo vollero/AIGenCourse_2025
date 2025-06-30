@@ -77,3 +77,5 @@ Le risorse qui raccolte rappresentano strumenti di supporto all'attività didatt
 *Questo progetto è dedicato a tutti i docenti che credono nel potenziale trasformativo della tecnologia al servizio dell'educazione di qualità.*
 
 *Molto del materiale in questo repository, compreso il presente documento, sono stati prodotti con strumenti di IA generativo e revisionati prima del rilascio dal proprietario del repository. A ogni documento è associato un disclaimer di revisione umana.*
+
+*Prodotto generato con Claude Sonnet 4 e revisionato dal proprietario del repository*
