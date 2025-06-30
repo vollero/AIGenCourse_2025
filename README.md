@@ -78,4 +78,4 @@ Le risorse qui raccolte rappresentano strumenti di supporto all'attività didatt
 
 *Molto del materiale in questo repository, compreso il presente documento, sono stati prodotti con strumenti di IA generativo e revisionati prima del rilascio dal proprietario del repository. A ogni documento è associato un disclaimer di revisione umana.*
 
-*Prodotto generato a partire da prompt specifico e dettagliato, prodotto dal proprietario del repository, con Claude Sonnet 4 e revisionato dal proprietario del repository prima del rilascio su online.*
+*Prodotto generato a partire da prompt specifico e dettagliato, prodotto dal proprietario del repository, con Claude Sonnet 4 e revisionato dal proprietario del repository prima del rilascio online.*
